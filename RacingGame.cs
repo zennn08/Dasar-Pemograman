@@ -25,20 +25,24 @@ class Program
     {
       Init();
       tampilkanIntro();
-      InitScene();
       while (lanjutMain)
       {
-        if (Console.WindowHeight < height || Console.WindowWidth < width)
+        InitScene();
+        while (mulaiMain)
         {
-          consoleError = true;
-          lanjutMain = false;
-          break;
+          if (Console.WindowHeight < height || Console.WindowWidth < width)
+          {
+            consoleError = true;
+            lanjutMain = false;
+            break;
+          }
+          UserInput();
+          Update();
+          Render();
+          if (mulaiMain) Thread.Sleep(TimeSpan.FromMilliseconds(33));
+
         }
-        UserInput();
-        Update();
-        Render();
-        if (mulaiMain) Thread.Sleep(TimeSpan.FromMilliseconds(33));
-        else GameOverScreen();
+        if (lanjutMain) GameOverScreen();
       }
       Console.Clear();
       if (consoleError)
@@ -161,7 +165,7 @@ class Program
     ConsoleKey key = Console.ReadKey(true).Key;
     switch (key)
     {
-      case ConsoleKey.Y: lanjutMain = true; InitScene(); break;
+      case ConsoleKey.Y: lanjutMain = true; break;
       case ConsoleKey.N or ConsoleKey.Escape: lanjutMain = false; break;
       default: goto GetInput;
     }
